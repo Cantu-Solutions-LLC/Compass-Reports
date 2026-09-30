@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Sales Projection & MTD Report</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333333; line-height: 1.6; margin: 0; padding: 20px; background-color: #f4f4f4;">
+    <div style="max-width: 800px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">Sales Projection & MTD Report</h2>
+        <p style="font-size: 14px; color: #666666;">Generated on: {{ .CurrentDate }} | Weekly Projection Target Date: {{ .TargetDate }}</p>
+
+        <h3 style="color: #3498db; margin-top: 30px;">Month-to-Date (MTD) Net Sales Summary</h3>
+        <p style="font-size: 14px;"><em>Based on the current month's invoice totals compared to last year's matching period + {{ .IncreasePct }}%.</em></p>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th style="background-color: #f8f9fa; border: 1px solid #dddddd; padding: 12px; text-align: left;">Metric</th>
+                    <th style="background-color: #f8f9fa; border: 1px solid #dddddd; padding: 12px; text-align: right;">Amount</th>
+                    <th style="background-color: #e8f4f8; border: 1px solid #dddddd; padding: 12px; text-align: right;">% to Goal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #dddddd; padding: 10px;">Current MTD Net Sales</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;">${{ .CurrentMTDNetSales }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right; font-weight: bold; color: #27ae60;">{{ .PctToLYMTDGoal }}%</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #dddddd; padding: 10px;">Projected LY MTD (Pacing Goal)</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;">${{ .ProjectedLYMTD }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right; color: #7f8c8d;">-</td>
+                </tr>
+                <tr style="background-color: #fdfefe;">
+                    <td style="border: 1px solid #dddddd; padding: 10px;"><strong>Projected LY Full Month (EOM Target)</strong></td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;"><strong>${{ .ProjectedLYFullMonth }}</strong></td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right; font-weight: bold; color: #c0392b;">{{ .PctToLYFullMonthGoal }}%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: #3498db; margin-top: 40px;">Upcoming Week: Projected Daily Net Sales</h3>
+        <p style="font-size: 14px;"><em>Projected based on prior year invoice totals, multiplied by a targeted {{ .IncreasePct }}% increase.</em></p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr>
+                    <th style="background-color: #2c3e50; color: #ffffff; border: 1px solid #dddddd; padding: 12px; text-align: center;">Projected Date</th>
+                    <th style="background-color: #2c3e50; color: #ffffff; border: 1px solid #dddddd; padding: 12px; text-align: right;">Projected Net Sales</th>
+                    <th style="background-color: #2c3e50; color: #ffffff; border: 1px solid #dddddd; padding: 12px; text-align: center;">Est. Customers</th>
+                    <th style="background-color: #2c3e50; color: #ffffff; border: 1px solid #dddddd; padding: 12px; text-align: right;">Est. Avg Transaction</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .DailyProjections }}
+                <tr>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: center;">{{ .ProjectedDate }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;">${{ .ProjectedNetSales }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: center;">{{ .ProjectedCustomerCount }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;">${{ .ProjectedAvgTransaction }}</td>
+                </tr>
+                {{ end }}
+                <tr style="background-color: #f2f4f4; font-weight: bold;">
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: center;">Weekly Total</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;">${{ .TotalWeeklyProjectedSales }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: center;">{{ .TotalWeeklyCustomers }}</td>
+                    <td style="border: 1px solid #dddddd; padding: 10px; text-align: right;">${{ .TotalWeeklyAvgTransaction }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
